@@ -9,6 +9,6 @@ build/
 readme/
 coverage/
 README.md
-CONTRIBUTING.md
+DEVELOPMENT.md
 docker-compose*.yml
 mock-database.json

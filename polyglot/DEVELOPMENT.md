@@ -1,8 +1,8 @@
-# Contributing to Polyglot
+# Polyglot Developer Guide
 
-Welcome to the Polyglot project! We are thrilled you want to help expand our flow-based application. This guide outlines how to set up your local development environment, use our mock data system, and extend the core building blocks of the platform: **Nodes**, **Exercise Nodes**, and **Edges**.
+This guide outlines how to set up your local development environment, use the mock data system, and extend the core building blocks of the platform: **Nodes**, **Exercise Nodes**, and **Edges**.
 
-By following these patterns, you ensure your contributions remain type-safe, integrate cleanly with our validation systems, and appear correctly in the editor UI.
+By following these patterns, you ensure code remains type-safe, integrates cleanly with the validation systems, and appears correctly in the editor UI.
 
 ---
 
@@ -129,18 +129,5 @@ If you need a new way to connect nodes (e.g., a new logical operator or visual l
 
 ---
 
-## Submitting Pull Requests
-
-We welcome all contributions! To submit your code:
-
-1. **Fork the repository** and create your branch from `main`.
-```bash
-git checkout -b feature/add-new-quiz-node
-```
-2. **Write clean, typed code** following the existing project architecture.
-3. **Test your changes** locally with both `USE_MOCK_DATA=true` and `USE_MOCK_DATA=false` (if you have backend access) to ensure everything renders and saves correctly.
-4. **Commit your changes** with clear, descriptive commit messages.
-5. **Push to your fork** and open a Pull Request against the `main` branch.
-6. **Describe your PR** in detail, noting which node/edge you added and any new dependencies introduced.
-
-Thank you for helping make Polyglot better!
+> [!NOTE]
+> This repository is a personal snapshot of the PISCO project and does not accept external contributions or pull requests.

@@ -181,7 +181,7 @@ Adding a new cognitive task to the canvas requires registering the component wit
 3. **Register Node:** Add the configuration to `src/components/nodes/ElementMapping.ts`.
 4. **Update Global Union:** Include the interface in `src/types/PolyglotNode.ts`.
 
-For complete details, see [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+For complete details, see [`DEVELOPMENT.md`](./DEVELOPMENT.md).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
