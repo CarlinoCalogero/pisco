@@ -1,18 +1,37 @@
+<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a id="readme-top"></a>
+
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/createlab-univaq/pisco">
-    <img src="readme/logo.png" alt="Logo" width="80" height="80">
+    <img src="../readme/logo.png" alt="PISCO Logo" width="100" height="100">
   </a>
 
-<h3 align="center">Polyglot</h3>
+<h2 align="center">PISCO — Polyglot DAG Protocol Editor</h2>
 
   <p align="center">
-    A flow-based application for creating, managing, and validating interactive learning paths. Polyglot features a robust drag-and-drop node editor, complex validation logic, nested container support, and a flexible edge routing system to build adaptive learning experiences.
+    <strong>Visual Graph-Based Cognitive Protocol Authoring Environment for Clinicians and Neuroscientists</strong>
+    <br />
+    <br />
+    <a href="https://github.com/createlab-univaq/pisco"><strong>Explore the official repository »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/createlab-univaq/pisco/issues">Report Bug</a>
+    &middot;
+    <a href="https://github.com/createlab-univaq/pisco/issues">Request Feature</a>
   </p>
 </div>
+
+> [!IMPORTANT]
+> **Repository Snapshot Notice**: This directory is part of a personal snapshot of the PISCO project up to the last commit (`ece164527e3192cb95554e9dd775e8870f734a79` by [CarlinoCalogero](https://github.com/CarlinoCalogero)). The official, ongoing repository of the project is hosted and maintained at **[https://github.com/createlab-univaq/pisco](https://github.com/createlab-univaq/pisco)**.
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -25,108 +44,191 @@
       </ul>
     </li>
     <li>
+      <a href="#core-capabilities">Core Capabilities</a>
+      <ul>
+        <li><a href="#visual-flow-design">Visual Flow Design</a></li>
+        <li><a href="#clinical-node-types">Clinical Node Types</a></li>
+        <li><a href="#conditional-branching--validation">Conditional Branching & Validation</a></li>
+      </ul>
+    </li>
+    <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#install">Install</a></li>
+        <li><a href="#installation--configuration">Installation & Configuration</a></li>
+        <li><a href="#development-server">Development Server</a></li>
+        <li><a href="#docker-deployment">Docker Deployment</a></li>
       </ul>
     </li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#extending-polyglot-adding-nodes">Extending Polyglot (Adding Nodes)</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
-<!-- ABOUT THE PROJECT -->
+<!-- ABOUT POLYGLOT -->
 ## About Polyglot
 
-Polyglot is a specialized flow-based editor designed for educational content creators and analysts. It allows users to visually construct learning paths using a node-based architecture. 
+**Polyglot** is the clinical protocol design environment for the PISCO serious game platform. Built with **Next.js 16**, **React 19**, and **React Flow**, it provides cognitive researchers and psychologists with an intuitive visual canvas to author complex, branching neuropsychological evaluation flows without writing any code.
 
-Key features include:
-* **Interactive Canvas**: Drag and drop nodes to build complex logic flows, supported by React Flow.
-* **Nested Structures**: Support for complex container nodes that can embed specific exercise nodes (e.g., FauxPas, Multiple Choice).
-* **Advanced Validation**: Real-time validation of node configurations, edge connections, point calculations, and missing data (e.g., questions and explanations).
-* **Mock Environment**: A built-in local JSON mock database mode (`USE_MOCK_DATA`) to allow rapid frontend UI development without requiring a live backend.
+In clinical practice, static questionnaires cannot dynamically adapt to a patient's cognitive fatigue or specific deficits. Polyglot allows researchers to:
+1. Connect standardized cognitive exercises (Theory of Mind, Baron-Cohen Faux Pas, RMET) into Directed Acyclic Graphs (DAGs).
+2. Configure score thresholds and conditional edges that determine the next task at runtime.
+3. Export and publish verified JSON graph payloads directly to the PISCO backend, which the **Godot Game Client** downloads and executes in real time.
 
-<p align="right">(<a href="#readme-top">up</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
+* [![Next.js][Next.js]][Next-url]
 * [![React][React.js]][React-url]
-* [![TypeScript][TypeScript]][TS-url]
-* [![React Flow][ReactFlow]][ReactFlow-url]
+* [![React Flow][ReactFlow.badge]][ReactFlow-url]
+* [![TypeScript][TypeScript.badge]][TypeScript-url]
+* [![Monaco Editor][Monaco.badge]][Monaco-url]
+* [![Docker][Docker.badge]][Docker-url]
 
-<p align="right">(<a href="#readme-top">up</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CORE CAPABILITIES -->
+## Core Capabilities
+
+### Visual Flow Design
+* **Interactive Canvas:** Built on React Flow with pan, zoom, minimap, auto-snapping, and drag-and-drop node placement.
+* **Property Inspector:** Contextual sidebar powered by `@monaco-editor/react` and custom property editors to tune question texts, answer choices, and asset URLs.
+* **In-Degree Root Discovery Compliance:** Guarantees that the flow has a well-defined starting node (in-degree = 0) and non-cyclical evaluation paths.
+
+### Clinical Node Types
+* **Theory of Mind (ToM) Nodes:** Story-driven scenarios presenting social interactions and assessing false belief understanding.
+* **Baron-Cohen Faux Pas Recognition Nodes:** Complex social mistake detection with automated sub-question skipping logic.
+* **Reading the Mind in the Eyes (RMET) Nodes:** Standardized eye-region photographs with 4 emotional state descriptors.
+* **Container Nodes:** Group related exercises into composite clinical test batteries.
+
+### Conditional Branching & Validation
+* **Score-Driven Edges:** Edges can evaluate patient score conditions (`>`, `>=`, `<`, `<=`, `==`) to navigate the player to adaptive follow-up tasks or remedial exercises.
+* **Validation Engine:** `nodeValidator.ts` and `conditionalEdgeValidator.ts` check the graph for missing connections, unconfigured properties, or malformed score bounds before saving.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Follow these steps to set up and run the Polyglot development server locally.
-
-<p align="right">(<a href="#readme-top">up</a>)</p>
-
 ### Prerequisites
 
-Before starting, please ensure that you have the following software installed:
-* **Node.js** (v18.x or higher recommended)
-* **npm** (comes with Node.js)
+* **Node.js:** Version 20.x or higher
+* **npm:** Version 10.x or higher (or pnpm / yarn)
 
-<p align="right">(<a href="#readme-top">up</a>)</p>
+### Installation & Configuration
 
-### Install
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/createlab-univaq/pisco.git
+   cd pisco/polyglot
+   ```
 
-1. Clone the repository
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
+
+3. **Configure environment variables:**
+   Copy `.env.example` to `.env.local`:
+   ```sh
+   cp .env.example .env.local
+   ```
+   Configure the following keys:
+   ```env
+   # API Endpoint (accessible in client components)
+   NEXT_PUBLIC_API_BASE_URL="http://localhost:8082/api"
+
+   # Mock Data Toggle:
+   # Set to true for offline development without a running backend
+   USE_MOCK_DATA=true
+
+   # Maximum image upload size
+   MAX_UPLOAD_SIZE=10mb
+   ```
+
+### Development Server
+
+Run the Next.js development server:
 ```sh
-  git clone https://github.com/createlab-univaq/pisco.git
-  cd polyglot
+npm run dev
 ```
 
-2. Install NPM packages
+Open [http://localhost:3000](http://localhost:3000) with your browser to view the editor.
+
+### Docker Deployment
+
+Polyglot includes a production multi-stage `Dockerfile` and `docker-compose.yml`:
 ```sh
-  npm install
+docker compose up -d
 ```
 
-3. Configure Environment Variables
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Make a copy of `.env.example` in the root directory and rename it `.env` or `.env.local`. You will need to configure your API endpoint and the mock data flag.
-```env
-# API Configuration
-# Use NEXT_PUBLIC_ prefix so it is accessible in client components
-NEXT_PUBLIC_API_BASE_URL="https://your-api-domain.com/api"
+<!-- EXTENDING POLYGLOT -->
+## Extending Polyglot (Adding Nodes)
 
-# Mock Data Toggle
-USE_MOCK_DATA=true
+Adding a new cognitive task to the canvas requires registering the component with Polyglot's type system:
 
-# Max image upload size
-MAX_UPLOAD_SIZE=10mb
-```
+1. **Define Identifier:** Add your node type to `src/types/NodeType.ts`.
+2. **Create Node Folder:** Under `src/components/nodes/<YourNewNode>/`, create:
+   * `types.ts` — TypeScript interfaces for node properties.
+   * `YourNewNodeProperties.tsx` — Right sidebar property editor.
+   * `ReactFlowYourNewNode.tsx` — Canvas display component.
+   * `validate.ts` — Custom validation rules.
+   * `index.ts` — Node registration config.
+3. **Register Node:** Add the configuration to `src/components/nodes/ElementMapping.ts`.
+4. **Update Global Union:** Include the interface in `src/types/PolyglotNode.ts`.
 
-4. Start the development server (with Turbopack)
-```sh
-  npm run dev
-```
+For complete details, see [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-5. Open your browser and navigate to `http://localhost:3000`.
+<!-- CONTACT -->
+## Contact
 
-## Contributing
+* **Calogero Carlino** - Game Programmer & Systems Architect
+  * Email: [carlinocalogero.dev@gmail.com](mailto:carlinocalogero.dev@gmail.com)
+  * Portfolio: [https://carlinocalogero.github.io](https://carlinocalogero.github.io)
+  * LinkedIn: [https://www.linkedin.com/in/calogero-carlino-2a94a33b5/](https://www.linkedin.com/in/calogero-carlino-2a94a33b5/)
+  * GitHub: [@CarlinoCalogero](https://github.com/CarlinoCalogero)
+* **CreateLab UNIVAQ** - [https://github.com/createlab-univaq](https://github.com/createlab-univaq)
+* **Project Repository:** [https://github.com/createlab-univaq/pisco](https://github.com/createlab-univaq/pisco)
 
-If you want to add new Nodes, Exercise types, or Custom Edges, please check the [CONTRIBUTING.md](./CONTRIBUTING.md) guide in the root directory for standard architectural procedures.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Top contributors:
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
 
-<a href="https://github.com/createlab-univaq/pisco/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=createlab-univaq/pisco" />
-</a>
+* [CreateLab - University of L'Aquila](https://github.com/createlab-univaq)
+* [React Flow](https://reactflow.dev/)
+* [Next.js by Vercel](https://nextjs.org/)
+* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[contributors-shield]: https://img.shields.io/github/contributors/createlab-univaq/pisco.svg?style=for-the-badge
+[contributors-url]: https://github.com/createlab-univaq/pisco/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/createlab-univaq/pisco.svg?style=for-the-badge
+[forks-url]: https://github.com/createlab-univaq/pisco/network/members
+[stars-shield]: https://img.shields.io/github/stars/createlab-univaq/pisco.svg?style=for-the-badge
+[stars-url]: https://github.com/createlab-univaq/pisco/stargazers
+[issues-shield]: https://img.shields.io/github/issues/createlab-univaq/pisco.svg?style=for-the-badge
+[issues-url]: https://github.com/createlab-univaq/pisco/issues
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/calogero-carlino-2a94a33b5/
+
+[Next.js]: https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[TypeScript]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
-[TS-url]: https://www.typescriptlang.org/
-[ReactFlow]: https://img.shields.io/badge/React_Flow-FF0072?style=for-the-badge&logo=react&logoColor=white
+[React.js]: https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://react.dev/
+[ReactFlow.badge]: https://img.shields.io/badge/React_Flow-FF0072?style=for-the-badge&logo=reactflow&logoColor=white
 [ReactFlow-url]: https://reactflow.dev/
+[TypeScript.badge]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white
+[TypeScript-url]: https://www.typescriptlang.org/
+[Monaco.badge]: https://img.shields.io/badge/Monaco_Editor-1E1E1E?style=for-the-badge
+[Monaco-url]: https://microsoft.github.io/monaco-editor/
+[Docker.badge]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
+[Docker-url]: https://www.docker.com/
